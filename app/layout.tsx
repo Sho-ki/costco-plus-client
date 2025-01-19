@@ -26,9 +26,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Head>
+      <head>
       <GoogleAdsense pId={process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_PUBLISHER_ID} />
-      </Head>
+      </head>
 
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
