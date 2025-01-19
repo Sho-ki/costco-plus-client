@@ -38,7 +38,7 @@ export default function CustomSelect({ options, value, onChange }: CustomSelectP
         className="bg-white border border-gray-300 rounded-md p-2 flex justify-between items-center cursor-pointer"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <span>{selectedOption?.label || '選択してください'}</span>
+        <span>{selectedOption?.label || '倉庫店を選択してください'}</span>
         <ChevronDown className={`transition-transform duration-300 ${isOpen ? 'transform rotate-180' : ''}`} />
       </div>
       <AnimatePresence>

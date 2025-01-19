@@ -31,12 +31,18 @@ export default function HomeClient({ initialWarehouses }: HomeClientProps) {
     field: 'discountPercentage',
     order: 'desc',
   });
-  const [warehouseId] = useAtom(warehouseIdAtom);
+    const [warehouseId] = useAtom(warehouseIdAtom);
   const [activeTab, setActiveTab] = useState<TabOption>('products');
 
-  // If warehouseId is null, use the first warehouse's id
-  const selectedWarehouseId = warehouseId || initialWarehouses[0]?.id || 0;
+  const selectedWarehouseId = warehouseId ?? initialWarehouses[0]?.id ?? null;
 
+  if (!selectedWarehouseId) {
+    return (
+      <div className="flex justify-center items-center h-40">
+        <p className="text-gray-500">データ取得中...</p>
+      </div>
+    );
+  }
   const onChangeSortBy = (value: SortOptionValue) => {
     const [field, order] = value.split('_'); // ["price", "asc"] etc.
     setSortBy({

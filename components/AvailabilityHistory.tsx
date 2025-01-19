@@ -14,16 +14,15 @@ export default function AvailabilityHistory({ histories = [] }: AvailabilityHist
   const dayLabels = ["2日前", "昨日", "今日"];
 
   const last3Days = daysAgoArray.map((daysAgo, idx) => {
-    const d = new Date();
-    d.setDate(d.getDate() - daysAgo);
+    const d = DateTime.now().setZone("Asia/Tokyo").minus({ days: daysAgo });
+    const ymdString = d.toISODate();
 
-    const ymdString = d.toISOString().split("T")[0];
-    const matchedRecord = histories.find(
-      (h) => {
-      const jpDate = DateTime.fromISO(h.date).setZone("Asia/Tokyo").toISO();
-      return jpDate?.split("T")[0] === ymdString
-    }
-    );
+    const matchedRecord = histories.find((h) => {
+      const jpDate = DateTime.fromISO(h.date)
+        .setZone("Asia/Tokyo")
+        .toISODate();
+      return jpDate === ymdString;
+    });
 
     return {
       label: dayLabels[idx],
