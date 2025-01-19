@@ -5,7 +5,7 @@ import { ProductForUsers } from '../types/product';
 import { Warehouse } from '../types/warehouse';
 
 export async function fetchWarehouses(): Promise<ApiResponse<Warehouse[]>> {
-	const response = await fetch('https://costco-plus.onrender.com/v1/warehouses/');
+	const response = await fetch('https://api.ikkoss.com/v1/warehouses/');
 	if (!response.ok) {
 		throw new Error('Failed to fetch warehouses');
 	}
@@ -13,7 +13,7 @@ export async function fetchWarehouses(): Promise<ApiResponse<Warehouse[]>> {
 }
 
 export async function fetchGasPrice(warehouseId: number): Promise<ApiResponse<GasPrice>> {
-	const response = await fetch(`https://costco-plus.onrender.com/v1/warehouses/${warehouseId}/gas_price`);
+	const response = await fetch(`https://api.ikkoss.com/v1/warehouses/${warehouseId}/gas_price`);
 	if (!response.ok) {
 		throw new Error('Failed to fetch gas price');
 	}
@@ -21,7 +21,7 @@ export async function fetchGasPrice(warehouseId: number): Promise<ApiResponse<Ga
 }
 
 export async function fetchWeeklyBuys(warehouseId: number): Promise<ApiResponse<ProductForUsers[]>> {
-	const response = await fetch(`https://costco-plus.onrender.com/v1/products/weekly_buys?warehouseId=${warehouseId}`);
+	const response = await fetch(`https://api.ikkoss.com/v1/products/weekly_buys?warehouseId=${warehouseId}`);
 	if (!response.ok) {
 		throw new Error('Failed to fetch weekly buys');
 	}
@@ -29,7 +29,7 @@ export async function fetchWeeklyBuys(warehouseId: number): Promise<ApiResponse<
 }
 
 export async function fetchCrowdData(warehouseId: number): Promise<ApiResponse<CrowdData>> {
-	const response = await fetch(`https://costco-plus.onrender.com/v1/warehouses/${warehouseId}/crowd`);
+	const response = await fetch(`https://api.ikkoss.com/v1/warehouses/${warehouseId}/crowd`);
 	if (!response.ok) {
 		throw new Error('Failed to fetch crowd data');
 	}
@@ -52,7 +52,7 @@ export async function createProductAvailabilityRecord(
 	warehouseId: number,
 	status: AvailabilityStatus
 ): Promise<ApiResponse<StorageRecord>> {
-	const response = await fetch('https://costco-plus.onrender.com/v1/product_availability_records', {
+	const response = await fetch('https://api.ikkoss.com/v1/product_availability_records', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({ productId, warehouseId, status }),
@@ -69,7 +69,7 @@ export async function updateProductAvailabilityRecord(
 	recordId: number,
 	status: AvailabilityStatus
 ): Promise<ApiResponse<StorageRecord>> {
-	const response = await fetch(`https://costco-plus.onrender.com/v1/product_availability_records/${recordId}`, {
+	const response = await fetch(`https://api.ikkoss.com/v1/product_availability_records/${recordId}`, {
 		method: 'PUT',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({ status }),
