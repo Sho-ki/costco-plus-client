@@ -4,6 +4,9 @@ const nextConfig: NextConfig = {
 	eslint: {
 		ignoreDuringBuilds: true,
 	},
+	env: {
+		NEXT_PUBLIC_GOOGLE_ADSENSE_PUBLISHER_ID: process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_PUBLISHER_ID,
+	},
 	images: {
 		remotePatterns: [
 			{
