@@ -15,7 +15,8 @@ interface CrowdData {
 }
 
 const daysOfWeek = ['日', '月', '火', '水', '木', '金', '土'];
-const hoursOfDay = Array.from({ length: 18 }, (_, i) => i + 6); // 6am to 11pm
+// 9am to 20pm
+const hoursOfDay = Array.from({ length: 12 }, (_, i) => i + 9);
 
 const getCrowdednessColor = (level: number) => {
   return `rgba(255, 0, 0, ${level / 100})`;

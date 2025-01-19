@@ -82,10 +82,15 @@ export default function WeeklyBuysClient({
   if (error) return <div>{error}</div>;
 
   return (
+    <> 
     <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {sortedProducts.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}
     </div>
+    <p className="text-xs text-gray-500 mt-2">
+        ※ 在庫状況はユーザーの皆さまからの報告に基づいており、在庫を保証するものではありません。
+    </p>
+    </>
   );
 }
