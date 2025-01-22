@@ -31,7 +31,7 @@ export default function HomeClient({ initialWarehouses }: HomeClientProps) {
     field: 'discountPercentage',
     order: 'desc',
   });
-    const [warehouseId] = useAtom(warehouseIdAtom);
+  const [warehouseId] = useAtom(warehouseIdAtom);
   const [activeTab, setActiveTab] = useState<TabOption>('products');
 
   const selectedWarehouseId = warehouseId ?? initialWarehouses[0]?.id ?? null;

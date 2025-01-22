@@ -88,7 +88,7 @@ export default function WeeklyBuysClient({
         <ProductCard key={product.id} product={product} />
       ))}
     </div>
-    <p className="text-xs text-gray-500 mt-2">
+    <p className="text-xs text-gray-500 mt-4">
         ※ 在庫状況はユーザーの皆さまからの報告に基づいており、在庫を保証するものではありません。
     </p>
     </>

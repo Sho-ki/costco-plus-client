@@ -48,7 +48,8 @@ export default function CustomSelect({ options, value, onChange }: CustomSelectP
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg"
+            className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg 
+                      max-h-72 overflow-y-auto"
           >
             {options.map((option) => (
               <div
@@ -63,6 +64,7 @@ export default function CustomSelect({ options, value, onChange }: CustomSelectP
               </div>
             ))}
           </motion.div>
+
         )}
       </AnimatePresence>
     </div>
