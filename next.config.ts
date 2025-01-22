@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
 	},
 	env: {
 		NEXT_PUBLIC_GOOGLE_ADSENSE_PUBLISHER_ID: process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_PUBLISHER_ID,
+		GA_ID: process.env.GA_ID,
 	},
 	images: {
 		remotePatterns: [
