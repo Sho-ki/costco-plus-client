@@ -36,7 +36,7 @@ export default function FuelPrices({ initialFuelPrices }: FuelPricesProps) {
               (
                 {
                   fuel?.price && fuel?.price > 0 ?
-                    `¥${fuel?.price.toFixed(2)}/L` :
+                    `¥${Math.floor(fuel?.price * 100) / 100}/L` :
                     '-'
                 }
               )
