@@ -26,6 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const gaId = process.env.GA_ID || '';
+  console.log('gaId: ', gaId);
   return (
     <html lang="en">
       <head>
