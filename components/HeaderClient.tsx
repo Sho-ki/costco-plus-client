@@ -51,6 +51,7 @@ export default function HeaderClient({ warehouses }: HeaderClientProps) {
                 fill
                 style={{ objectFit: 'contain' }}
                 priority
+                sizes='(max-width: 640px) 100px, 200px'
               />
             </motion.div>
             <motion.h1

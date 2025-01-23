@@ -88,9 +88,22 @@ export default function WeeklyBuysClient({
         <ProductCard key={product.id} product={product} />
       ))}
     </div>
-    <p className="text-xs text-gray-500 mt-4">
+    <div className="text-xs text-gray-500 mt-4">
+    <p>
         ※ 在庫状況はユーザーの皆さまからの報告に基づいており、在庫を保証するものではありません。
     </p>
+    <p>
+        ※ 一部画像は{" "}コストコ公式サイト{" "}
+        <a
+          href="https://www.costco.co.jp/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          https://www.costco.co.jp/
+        </a>{" "}
+        から引用しています。
+      </p>
+    </div>
     </>
   );
 }

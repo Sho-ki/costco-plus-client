@@ -44,6 +44,7 @@ export default function ImageCarousel({ images, alt, onClick }: ImageCarouselPro
           alt={`${alt} - 画像 ${currentIndex + 1}`}
           fill
           style={{ objectFit: "cover" }}
+          sizes='(max-width: 640px) 100px, 200px'
         />
       </motion.div>
     </AnimatePresence>
