@@ -127,6 +127,8 @@ export default function WeeklyBuysClient({
       // 2) 12件ごとに広告を追加（商品をスキップしない）
       //    (index + 1) が 12 の倍数になった時に広告
       if (index !== 0 && (index + 1) % AD_INTERVAL === 0) {
+        console.log('INFEED', IN_FEED_SLOTS[(index+1) / AD_INTERVAL - 1],(index+1), (index+1) / AD_INTERVAL - 1);
+
         acc.push(
           <div
             key={`ad_${index}`}
