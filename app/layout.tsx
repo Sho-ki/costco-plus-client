@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { Gabarito, Radio_Canada } from "next/font/google";
 import "./globals.css";
-import GoogleAdsense from "../components/GoogleAdsense";
+// import GoogleAdsense from "../components/GoogleAdsense";
+import { GoogleAdSense } from "next-google-adsense";
 import Script from "next/script";
 
 import Footer from "../components/Footer";
-import BrandHeader from '../components/Header/BrandHeader';
 
 const geistSans = Gabarito({
   variable: "--font-geist-sans",
@@ -42,7 +42,8 @@ export default function RootLayout({
           crossOrigin="anonymous"
           strategy="afterInteractive"
         /> */}
-        <GoogleAdsense pId={pId} />
+        {/* <GoogleAdsense pId={pId} /> */}
+        <GoogleAdSense publisherId={pId} />
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
           strategy="afterInteractive"
