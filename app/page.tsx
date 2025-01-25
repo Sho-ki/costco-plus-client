@@ -5,21 +5,6 @@ import HomeClient from '../components/HomeClient';
 import HeaderServer from '../components/HeaderServer';
 import { AdUnit } from 'next-google-adsense';
 
-export const InFeedAd = () => {
-  return (
-    <ins
-      className="adsbygoogle"
-      style={{ display: "block" }}
-      data-ad-format="fluid"
-      data-ad-layout-key="<AD_LAYOUT_KEY>"
-      data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-      data-ad-slot="XXXXXXXXXX"
-    />
-  );
-};
-
-
-
 export const metadata = {
   title: 'コストコハッカープラス＋ | もっとコストコ！',
   description: 'コストコの最新セール情報、リアルタイム混雑状況、ガソリン価格をチェック。コストコでのショッピングをより便利に、よりお得に。',
