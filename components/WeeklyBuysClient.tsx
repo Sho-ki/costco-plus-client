@@ -127,15 +127,13 @@ export default function WeeklyBuysClient({
       // 2) 12件ごとに広告を追加（商品をスキップしない）
       //    (index + 1) が 12 の倍数になった時に広告
       if (index !== 0 && (index + 1) % AD_INTERVAL === 0) {
-        console.log('INFEED', IN_FEED_SLOTS[index / AD_INTERVAL - 1]);
-
         acc.push(
           <div
             key={`ad_${index}`}
             // 広告は全ての列を占めるように（モバイル2列分～デスクトップ3列分）
             className="col-span-2 md:col-span-2 lg:col-span-3"
           >
-            <GoogleAdsense type="fluid" slotId={IN_FEED_SLOTS[index / AD_INTERVAL - 1]?.dataAdSlot} dataLayoutKey={IN_FEED_SLOTS[index / AD_INTERVAL - 1]?.dataLayoutKey} />
+            <GoogleAdsense type="fluid" slotId={IN_FEED_SLOTS[(index+1) / AD_INTERVAL - 1]?.dataAdSlot} dataLayoutKey={IN_FEED_SLOTS[(index+1) / AD_INTERVAL - 1]?.dataLayoutKey} />
           </div>
         );
       }
