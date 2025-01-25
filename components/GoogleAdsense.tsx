@@ -8,7 +8,7 @@ declare global {
 }
 
 type GoogleAdsenseProps = {
-  type?: 'fluid' | 'auto';
+  type?: 'fluid' | 'auto' | 'autorelaxed';
   slotId?: string;
   dataLayoutKey?: string;
 };
@@ -37,6 +37,14 @@ export default function GoogleAdsense({ type = 'auto', slotId, dataLayoutKey }:G
             data-full-width-responsive="true"
           ></ins>
         )}
+        {type === 'autorelaxed' && (
+          <ins className="adsbygoogle"
+            style={{display: 'block'}}
+            data-ad-format="autorelaxed"
+            data-ad-client={`ca-pub-${pId}`}
+            data-ad-slot="6986135231"></ins>
+          )}
+
         {type === 'auto' && (
           <ins className="adsbygoogle"
             style={{display: 'block'}}
@@ -44,7 +52,7 @@ export default function GoogleAdsense({ type = 'auto', slotId, dataLayoutKey }:G
             data-ad-client={`ca-pub-${pId}`}
             data-full-width-responsive="true"
             data-ad-slot="8909860495"></ins>
-          )}
+        )}
       {/* <Script>
      (adsbygoogle = window.adsbygoogle || []).push({});
       </Script> */}

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { fetchGasPrice } from '../utils/api';
 import FuelPrices from './FuelPrices';
 import { FuelPrice } from '../types/fuelPrice';
+import GoogleAdsense from './GoogleAdsense';
 
 interface GasPricesClientProps {
   warehouseId: number;
@@ -51,5 +52,5 @@ export default function GasPricesClient({ warehouseId }: GasPricesClientProps) {
   if (error) return <div>{error}</div>;
   if (!fuelPrices) return <div>データがありません</div>;
 
-  return <FuelPrices initialFuelPrices={fuelPrices} />;
+  return <><FuelPrices initialFuelPrices={fuelPrices} /><GoogleAdsense type='autorelaxed'/></>;
 }
