@@ -14,13 +14,13 @@ type GoogleAdsenseProps = {
 export default function GoogleAdsense({ type = 'auto' }:GoogleAdsenseProps) {
   const pId = process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_PUBLISHER_ID;
   if(!pId) return <></>
-  useEffect(() => {
-    try {
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
+  // useEffect(() => {
+  //   try {
+  //     (window.adsbygoogle = window.adsbygoogle || []).push({});
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }, []);
 
   return (
     <>
