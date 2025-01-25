@@ -35,11 +35,11 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <head>
-        <script
+        <Script
           async
           src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-${pId}`}
           crossOrigin="anonymous"
-          // strategy="afterInteractive"
+          strategy='lazyOnload'
         />
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
