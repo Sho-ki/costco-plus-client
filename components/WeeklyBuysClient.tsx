@@ -86,7 +86,7 @@ export default function WeeklyBuysClient({
     <> 
     <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {sortedProducts.map((product, i) => (
-        i % 7 === 0 ? <><GoogleAdsense key={`${i}_${product.id}`} type='fluid'/><ProductCard key={product.id} product={product} /></>: <ProductCard key={product.id} product={product} />
+        i !== 0 && i % 7 === 0 ? <><GoogleAdsense key={`${i}_${product.id}`} type='fluid'/><ProductCard key={product.id} product={product} /></>: <ProductCard key={product.id} product={product} />
         // <ProductCard key={product.id} product={product} />
       ))}
     </div>
