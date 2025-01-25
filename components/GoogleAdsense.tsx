@@ -26,7 +26,7 @@ export default function GoogleAdsense({ type = 'auto', slotId, dataLayoutKey }:G
 
   return (
     <>
-        {/* {type === 'fluid' && (
+        {type === 'fluid' && (
           <ins
             className="adsbygoogle"
             style={{ display: "block" }}
@@ -36,13 +36,14 @@ export default function GoogleAdsense({ type = 'auto', slotId, dataLayoutKey }:G
             data-ad-layout-key={dataLayoutKey || "+3m+pw-l-78+mx"}
             data-full-width-responsive="true"
           ></ins>
-        )} */}
+        )}
         {type === 'auto' && (
           <ins className="adsbygoogle"
             style={{display: 'block'}}
-            data-ad-format="autorelaxed"
+            data-ad-format="auto"
             data-ad-client={`ca-pub-${pId}`}
-            data-ad-slot="6986135231"></ins>
+            data-full-width-responsive="true"
+            data-ad-slot="8909860495"></ins>
           )}
       {/* <Script>
      (adsbygoogle = window.adsbygoogle || []).push({});
