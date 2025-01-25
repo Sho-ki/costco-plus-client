@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { fetchWeeklyBuys } from '../utils/api';
 import ProductCard from './ProductCard';
 import { ProductForUsers } from '../types/product';
+import GoogleAdsense from './GoogleAdsense';
 
 interface WeeklyBuysClientProps {
   warehouseId: number;
@@ -84,8 +85,9 @@ export default function WeeklyBuysClient({
   return (
     <> 
     <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {sortedProducts.map((product) => (
-        <ProductCard key={product.id} product={product} />
+      {sortedProducts.map((product, i) => (
+        i % 7 === 0 ? <><GoogleAdsense key={`${i}_${product.id}`} type='fluid'/><ProductCard key={product.id} product={product} /></>: <ProductCard key={product.id} product={product} />
+        // <ProductCard key={product.id} product={product} />
       ))}
     </div>
     <div className="text-xs text-gray-500 mt-4">
