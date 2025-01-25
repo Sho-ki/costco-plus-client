@@ -22,9 +22,15 @@ const GoogleAdsense: React.FC<Props> = ({ pId }) => {
   //   }
   // }, []);
 
+  useEffect(() => {
+    if (window) {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    }
+  }, []);
+
   return (
     <>
-      <ins
+      {/* <ins
         className="adsbygoogle"
         style={{ display: "block" }}
         data-ad-client={`ca-pub-${pId}`}
@@ -32,7 +38,7 @@ const GoogleAdsense: React.FC<Props> = ({ pId }) => {
         data-ad-format="fluid"
         data-ad-layout-key="+3m+pw-l-78+mx"
         data-full-width-responsive="true"
-      ></ins>
+      ></ins> */}
       <ins className="adsbygoogle"
         style={{display: 'block'}}
         data-ad-format="autorelaxed"
