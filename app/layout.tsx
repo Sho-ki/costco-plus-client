@@ -58,8 +58,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <GoogleAdsense pId={pId} />
         {children}
+        <GoogleAdsense />
         <Footer />
       </body>
     </html>

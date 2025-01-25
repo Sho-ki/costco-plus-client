@@ -7,13 +7,9 @@ declare global {
   var adsbygoogle: any[];
 }
 
-type Props = {
-  pId?: string;
-};
-
-const GoogleAdsense: React.FC<Props> = ({ pId }) => {
-  if (!pId) return null;
-
+const GoogleAdsense: React.FC = () => {
+  const pId = process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_PUBLISHER_ID;
+  if(!pId) return null;
   useEffect(() => {
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
