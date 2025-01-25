@@ -85,7 +85,7 @@ export default function WeeklyBuysClient({
   // ----------------------------
   // 商品 + 広告の配列を作成
   // ----------------------------
-  const AD_INTERVAL = 8; // 8件ごとに広告を挿入（任意で変更可能）
+  const AD_INTERVAL = 10; // 10件ごとに広告を挿入（任意で変更可能）
 
   /**
    * reduce を使って、全ての ProductCard を追加しながら
@@ -101,8 +101,8 @@ export default function WeeklyBuysClient({
         />
       );
 
-      // 2) 8件ごとに広告を追加（商品をスキップしない）
-      //    (index + 1) が 8 の倍数になった時に広告
+      // 2) 10件ごとに広告を追加（商品をスキップしない）
+      //    (index + 1) が 10 の倍数になった時に広告
       if (index !== 0 && (index + 1) % AD_INTERVAL === 0) {
         acc.push(
           <div
@@ -110,7 +110,7 @@ export default function WeeklyBuysClient({
             // 広告は全ての列を占めるように（モバイル2列分～デスクトップ3列分）
             className="col-span-2 md:col-span-2 lg:col-span-3"
           >
-            <GoogleAdsense type="fluid" slotId={IN_FEED_SLOTS[index / AD_INTERVAL]?.dataAdSlot} dataLayoutKey={IN_FEED_SLOTS[index / AD_INTERVAL]?.dataLayoutKey} />
+            <GoogleAdsense type="fluid" slotId={IN_FEED_SLOTS[index / AD_INTERVAL - 1]?.dataAdSlot} dataLayoutKey={IN_FEED_SLOTS[index / AD_INTERVAL - 1]?.dataLayoutKey} />
           </div>
         );
       }
