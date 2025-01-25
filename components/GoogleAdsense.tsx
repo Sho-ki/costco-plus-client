@@ -1,5 +1,7 @@
+'use client';
+
 import Script from 'next/script';
-// import { useEffect } from "react";
+import { useEffect } from "react";
 
 declare global {
   var adsbygoogle: any[];
@@ -12,13 +14,13 @@ type Props = {
 const GoogleAdsense: React.FC<Props> = ({ pId }) => {
   if (!pId) return null;
 
-  // useEffect(() => {
-  //   try {
-  //     (window.adsbygoogle = window.adsbygoogle || []).push({});
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }, []);
+  useEffect(() => {
+    try {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
 
   return (
     <>
