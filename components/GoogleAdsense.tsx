@@ -9,9 +9,11 @@ declare global {
 
 type GoogleAdsenseProps = {
   type?: 'fluid' | 'auto';
+  slotId?: string;
+  dataLayoutKey?: string;
 };
 
-export default function GoogleAdsense({ type = 'auto' }:GoogleAdsenseProps) {
+export default function GoogleAdsense({ type = 'auto', slotId, dataLayoutKey }:GoogleAdsenseProps) {
   const pId = process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_PUBLISHER_ID;
   if(!pId) return <></>
   useEffect(() => {
@@ -29,9 +31,9 @@ export default function GoogleAdsense({ type = 'auto' }:GoogleAdsenseProps) {
             className="adsbygoogle"
             style={{ display: "block" }}
             data-ad-client={`ca-pub-${pId}`}
-            data-ad-slot="8854020173"
+            data-ad-slot={slotId || "8854020173"}
             data-ad-format="fluid"
-            data-ad-layout-key="+3m+pw-l-78+mx"
+            data-ad-layout-key={dataLayoutKey || "+3m+pw-l-78+mx"}
             data-full-width-responsive="true"
           ></ins>
         )}

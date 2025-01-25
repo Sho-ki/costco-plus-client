@@ -5,6 +5,7 @@ import { fetchWeeklyBuys } from "../utils/api";
 import ProductCard from "./ProductCard";
 import { ProductForUsers } from "../types/product";
 import GoogleAdsense from "./GoogleAdsense";
+import { IN_FEED_SLOTS } from "../lib/inFeedSlots";
 
 interface WeeklyBuysClientProps {
   warehouseId: number;
@@ -100,8 +101,8 @@ export default function WeeklyBuysClient({
         />
       );
 
-      // 2) 7件ごとに広告を追加（商品をスキップしない）
-      //    (index + 1) が 7 の倍数になった時に広告
+      // 2) 8件ごとに広告を追加（商品をスキップしない）
+      //    (index + 1) が 8 の倍数になった時に広告
       if (index !== 0 && (index + 1) % AD_INTERVAL === 0) {
         acc.push(
           <div
@@ -109,7 +110,7 @@ export default function WeeklyBuysClient({
             // 広告は全ての列を占めるように（モバイル2列分～デスクトップ3列分）
             className="col-span-2 md:col-span-2 lg:col-span-3"
           >
-            <GoogleAdsense type="fluid" />
+            <GoogleAdsense type="fluid" slotId={IN_FEED_SLOTS[index / AD_INTERVAL]?.dataAdSlot} dataLayoutKey={IN_FEED_SLOTS[index / AD_INTERVAL]?.dataLayoutKey} />
           </div>
         );
       }
