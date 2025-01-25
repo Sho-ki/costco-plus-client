@@ -24,7 +24,6 @@ export default function GoogleAdsense({ type = 'auto' }:GoogleAdsenseProps) {
 
   return (
     <>
-      (
         {type === 'fluid' && (
           <ins
             className="adsbygoogle"
@@ -36,9 +35,6 @@ export default function GoogleAdsense({ type = 'auto' }:GoogleAdsenseProps) {
             data-full-width-responsive="true"
           ></ins>
         )}
-      )
-
-      (
         {type === 'auto' && (
           <ins className="adsbygoogle"
             style={{display: 'block'}}
@@ -46,8 +42,6 @@ export default function GoogleAdsense({ type = 'auto' }:GoogleAdsenseProps) {
             data-ad-client={`ca-pub-${pId}`}
             data-ad-slot="6986135231"></ins>
           )}
-      )
-
       <Script>
      (adsbygoogle = window.adsbygoogle || []).push({});
       </Script>
