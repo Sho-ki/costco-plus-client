@@ -85,7 +85,7 @@ export default function WeeklyBuysClient({
   // ----------------------------
   // 商品 + 広告の配列を作成
   // ----------------------------
-  const AD_INTERVAL = 10; // 10件ごとに広告を挿入（任意で変更可能）
+  const AD_INTERVAL = 12; // 12件ごとに広告を挿入（任意で変更可能）
 
   /**
    * reduce を使って、全ての ProductCard を追加しながら
@@ -101,9 +101,11 @@ export default function WeeklyBuysClient({
         />
       );
 
-      // 2) 10件ごとに広告を追加（商品をスキップしない）
-      //    (index + 1) が 10 の倍数になった時に広告
+      // 2) 12件ごとに広告を追加（商品をスキップしない）
+      //    (index + 1) が 12 の倍数になった時に広告
       if (index !== 0 && (index + 1) % AD_INTERVAL === 0) {
+        console.log('INFEED', IN_FEED_SLOTS[index / AD_INTERVAL - 1]);
+
         acc.push(
           <div
             key={`ad_${index}`}
