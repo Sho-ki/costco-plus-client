@@ -1,7 +1,8 @@
 "use client";
 
-import Script from "next/script";
+// import Script from "next/script";
 import { useEffect } from "react";
+import {Adsense} from '@ctrl/react-adsense';
 
 declare global {
   var adsbygoogle: any[];
@@ -24,7 +25,15 @@ const GoogleAdsense: React.FC<Props> = ({ pId }) => {
 
   return (
     <>
-      <Script
+    <Adsense
+      client={`ca-pub-${pId}`}
+      slot="8854020173"
+      style={{ display: 'block' }}
+      layout="in-article"
+      format="fluid"
+      layoutKey="+3m+pw-l-78+mx"
+    />
+      {/* <Script
         async
         strategy="afterInteractive"
         src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-${pId}`}
@@ -38,7 +47,7 @@ const GoogleAdsense: React.FC<Props> = ({ pId }) => {
         data-ad-format="fluid"
         data-ad-layout-key="+3m+pw-l-78+mx"
         data-full-width-responsive="true"
-      ></ins>
+      ></ins> */}
     </>
   );
 };

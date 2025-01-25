@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Gabarito, Radio_Canada } from "next/font/google";
 import "./globals.css";
-// import GoogleAdsense from "../components/GoogleAdsense";
-import { GoogleAdSense } from "next-google-adsense";
+import GoogleAdsense from "../components/GoogleAdsense";
 import Script from "next/script";
 
 import Footer from "../components/Footer";
@@ -36,14 +35,13 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <head>
-        {/* <Script
+        <Script
           async
           src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-${pId}`}
           crossOrigin="anonymous"
           strategy="afterInteractive"
-        /> */}
-        {/* <GoogleAdsense pId={pId} /> */}
-        <GoogleAdSense publisherId={pId} />
+        />
+        <GoogleAdsense pId={pId} />
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
           strategy="afterInteractive"
