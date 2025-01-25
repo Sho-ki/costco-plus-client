@@ -44,9 +44,9 @@ export default function GoogleAdsense({ type = 'auto', slotId, dataLayoutKey }:G
             data-ad-client={`ca-pub-${pId}`}
             data-ad-slot="6986135231"></ins>
           )}
-      {/* <Script>
+      <Script>
      (adsbygoogle = window.adsbygoogle || []).push({});
-      </Script> */}
+      </Script>
     </>
   );
 };
