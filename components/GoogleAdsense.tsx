@@ -26,7 +26,7 @@ export default function GoogleAdsense({ type = 'auto', slotId, dataLayoutKey }:G
 
   return (
     <>
-        {type === 'fluid' && (
+        {/* {type === 'fluid' && (
           <ins
             className="adsbygoogle"
             style={{ display: "block" }}
@@ -36,7 +36,7 @@ export default function GoogleAdsense({ type = 'auto', slotId, dataLayoutKey }:G
             data-ad-layout-key={dataLayoutKey || "+3m+pw-l-78+mx"}
             data-full-width-responsive="true"
           ></ins>
-        )}
+        )} */}
         {type === 'auto' && (
           <ins className="adsbygoogle"
             style={{display: 'block'}}
@@ -44,9 +44,9 @@ export default function GoogleAdsense({ type = 'auto', slotId, dataLayoutKey }:G
             data-ad-client={`ca-pub-${pId}`}
             data-ad-slot="6986135231"></ins>
           )}
-      <Script>
+      {/* <Script>
      (adsbygoogle = window.adsbygoogle || []).push({});
-      </Script>
+      </Script> */}
     </>
   );
 };
