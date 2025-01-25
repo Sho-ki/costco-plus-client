@@ -1,21 +1,32 @@
+'use client';
+
+import { useRouter } from 'next/router';
 import Script from "next/script";
+import { useEffect } from 'react';
+
+declare global {
+  var adsbygoogle: unknown[];
+}
+
 
 type Props = {
   pId?: string;
 };
 
 const GoogleAdsense: React.FC<Props> = ({ pId }) => {
-  if (process.env.NODE_ENV !== "production" || !pId) {
-    return null;
-  }
+  if(!pId) return null;
+  const { asPath } = useRouter();
+
+  useEffect(() => {
+    try {
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (error) {
+      console.error(error);
+    }
+  }, [asPath]);
+  
   return (
     <>
-    <Script
-      async
-      src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-${pId}`}
-      crossOrigin="anonymous"
-      strategy="afterInteractive"
-    />
     <ins className="adsbygoogle"
           style={{ display: "block" }}
           data-ad-format="fluid"
@@ -23,9 +34,9 @@ const GoogleAdsense: React.FC<Props> = ({ pId }) => {
           data-ad-client={`ca-pub-${pId}`}
           data-ad-slot="8854020173">
     </ins>
-    <Script>
+    {/* <Script>
           (adsbygoogle = window.adsbygoogle || []).push({});
-    </Script>
+    </Script> */}
       </>
   );
 };
