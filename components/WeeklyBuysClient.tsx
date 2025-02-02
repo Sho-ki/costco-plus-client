@@ -96,8 +96,8 @@ export default function WeeklyBuysClient({
       const scrollPosition = window.innerHeight + window.scrollY;
       const totalHeight = document.body.offsetHeight;
       const scrollPercent = (scrollPosition / totalHeight) * 100;
-      // If scrolled past 75% and not currently loading, trigger loadMore
-      if (scrollPercent >= 75) {
+      // If scrolled past 65% and not currently loading, trigger loadMore
+      if (scrollPercent >= 65) {
         loadMore();
       }
     };
@@ -185,16 +185,14 @@ export default function WeeklyBuysClient({
       {/* ソートのセレクトボックス */}
       <div className="flex justify-end mb-4">
         <select
+          aria-label="並び替えオプション"
           value={`${sortField}_${sortOrder}`}
           onChange={(e) => {
-            const [field, order] = e.target.value.split("_") as [
-              SortField,
-              SortOrder
-            ];
+            const [field, order] = e.target.value.split("_") as [SortField, SortOrder];
             setSortField(field);
             setSortOrder(order);
           }}
-          className="border border-gray-300 rounded p-2"
+          className="border border-gray-300 rounded p-2 text-gray-900"
         >
           <option value="discountPercentage_desc">割引率が高い順</option>
           <option value="discountPercentage_asc">割引率が低い順</option>
@@ -207,6 +205,14 @@ export default function WeeklyBuysClient({
       <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {productsWithAds}
       </div>
+        
+        {/* Display a loading text without the loading animation and the overlay */}
+      {readMoreLoading && (
+        <div className="text-center text-gray-900 mt-4">
+          データ取得中...
+        </div>
+      )}
+
 
       {sortUpdateLoading && (
         <div className="fixed inset-0 flex flex-col items-center justify-center bg-gray-900 bg-opacity-80" style={{ zIndex: 1000 }}>
@@ -217,7 +223,7 @@ export default function WeeklyBuysClient({
         </div>
       )}
 
-      <div className="text-xs text-gray-500 mt-4">
+      <div className="text-xs text-gray-900 mt-4">
         <p>
           ※ 在庫状況はユーザーの皆さまからの報告に基づいており、在庫を保証するものではありません。
         </p>

@@ -3,7 +3,7 @@ import { FaInstagram, FaYahoo } from "react-icons/fa";
 
 export default function Footer() {
   return (
-    <footer className="text-center text-sm text-gray-600 py-4">
+    <footer className="text-center text-sm text-gray-900 py-4">
       <nav className="mt-4 flex flex-col items-center space-y-2 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
         <a
           href="https://www.instagram.com/costco_hacker"
