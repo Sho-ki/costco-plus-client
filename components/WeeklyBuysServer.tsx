@@ -22,7 +22,7 @@ export default async function WeeklyBuysServer({
     // Fetch first page only (adjust page/size as needed)
     const response = await fetchWeeklyBuys(warehouseId, {
       page: 1,
-      size: 8,
+      size: 10,
       sortField: field,
       sortOrder: order,
     });
