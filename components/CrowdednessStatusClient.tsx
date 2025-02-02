@@ -57,6 +57,7 @@ export default function CrowdednessStatusClient({
 }: CrowdednessStatusClientProps) {
   // 1) Keep the SSR crowd data in state
   const crowdednessData = initialCrowdData;
+  const [isMounted, setIsMounted] = useState(false);
 
   // 2) A live clock that updates every second
   // We'll be showing a real-time clock, which the server can't match exactly
@@ -64,6 +65,7 @@ export default function CrowdednessStatusClient({
   const [currentTime, setCurrentTime] = useState(() => new Date());
 
   useEffect(() => {
+    setIsMounted(true);
     const timeInterval = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
@@ -73,6 +75,10 @@ export default function CrowdednessStatusClient({
   // If no data, show loading
   if (!crowdednessData || crowdednessData.length === 0) {
     return <div>データを取得中...</div>;
+  }
+    if (!isMounted) {
+    // You can choose to render a static placeholder or nothing at all
+    return <div>読み込み中...</div>;
   }
 
   // 3) Figure out the current day/hour for the user's local time
