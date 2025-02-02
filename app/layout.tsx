@@ -36,7 +36,6 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <head>
-        <Link href="https://ikkoss.com" ref='canonical' />
         <script
           async
           src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-${pId}`}

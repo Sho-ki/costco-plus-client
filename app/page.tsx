@@ -46,7 +46,7 @@ export async function generateMetadata() {
     updatedTime: new Date().toISOString(),
   },
   alternates: {
-    canonical: "/",
+    canonical: "https://app.ikkoss.com/",
   },
 };
 }
