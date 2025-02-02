@@ -8,6 +8,11 @@ import ProductCardClient from "./ProductCardClient";
 import { fetchWeeklyBuys } from "../utils/api";
 import { Pagination } from "../types/apiResponse";
 import { useSearchParams } from "next/navigation";
+import dynamic from "next/dynamic";
+
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
+import loadingAnimation from "../public/loading.json";
+
 
 type SortField = "price" | "discountPercentage";
 type SortOrder = "asc" | "desc";
@@ -226,25 +231,15 @@ export default function WeeklyBuysClient({
       )}
 
       {sortUpdateLoading && (
-        <div
-          className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-80 flex-col"
-          style={{ zIndex: 1000 }}
-        >
-          <div className="flex items-center">
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              width={150}
-              height={150}
-            >
-              <source src="/load.webm" type="video/webm" />
-              Your browser does not support the video tag.
-            </video>
-          </div>
-          <div className="text-white text-2xl">データ取得中...</div>
+      <div
+        className="fixed inset-0 flex flex-col items-center justify-center bg-gray-900 bg-opacity-80"
+        style={{ zIndex: 1000 }}
+      >
+        <div className="flex items-center mb-4" style={{ width: 150, height: 150 }}>
+          <Lottie animationData={loadingAnimation} loop />
         </div>
+        <div className="text-white text-2xl">データ取得中...</div>
+      </div>
       )}
 
       <div className="text-xs text-gray-500 mt-4">
