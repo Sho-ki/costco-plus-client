@@ -13,7 +13,6 @@ import dynamic from "next/dynamic";
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 import loadingAnimation from "../public/loading.json";
 
-
 type SortField = "price" | "discountPercentage";
 type SortOrder = "asc" | "desc";
 
@@ -50,8 +49,6 @@ export default function WeeklyBuysClient({
   const [readMoreLoading, setReadMoreLoading] = useState<boolean>(false);
   const [sortUpdateLoading, setSortUpdateLoading] = useState<boolean>(false);
 
-  // Sentinel ref for infinite scroll
-  const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   // A ref to track whether this is the initial render for the sort effect.
   const initialSortRender = useRef(true);
@@ -70,12 +67,11 @@ export default function WeeklyBuysClient({
   }, [currentTab]);
 
   // ------------------------------------------------
-  // Fetch more products when scrolling (infinite scroll)
+  // Fetch more products when user scrolls past 70% of the page
   // ------------------------------------------------
   const loadMore = useCallback(async () => {
     // Do not fetch if already loading or if all products are loaded
     if (readMoreLoading || products.length >= pagination.totalCount) return;
-
     setReadMoreLoading(true);
     try {
       const nextPage = pagination.page + 1;
@@ -95,22 +91,19 @@ export default function WeeklyBuysClient({
     }
   }, [readMoreLoading, products, pagination, warehouseId, pageSize, sortField, sortOrder]);
 
-  // Attach Intersection Observer only once
   useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
+    const handleScroll = () => {
+      const scrollPosition = window.innerHeight + window.scrollY;
+      const totalHeight = document.body.offsetHeight;
+      const scrollPercent = (scrollPosition / totalHeight) * 100;
+      // If scrolled past 75% and not currently loading, trigger loadMore
+      if (scrollPercent >= 75) {
         loadMore();
       }
-    });
-    const currentSentinel = sentinelRef.current;
-    if (currentSentinel) {
-      observer.observe(currentSentinel);
-    }
-    return () => {
-      if (currentSentinel) {
-        observer.unobserve(currentSentinel);
-      }
     };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [loadMore]);
 
   // ------------------------------------------------
@@ -119,7 +112,6 @@ export default function WeeklyBuysClient({
   useEffect(() => {
     // Skip on the very first render OR when the tab has just changed.
     if (initialSortRender.current) {
-      // Reset the flag and do not fetch sorted data.
       initialSortRender.current = false;
       return;
     }
@@ -150,12 +142,9 @@ export default function WeeklyBuysClient({
   const uniqueProducts = useMemo(() => {
     const seen = new Set<number>();
     return products.filter((product) => {
-      if (seen.has(product.id)) {
-        return false;
-      } else {
-        seen.add(product.id);
-        return true;
-      }
+      if (seen.has(product.id)) return false;
+      seen.add(product.id);
+      return true;
     });
   }, [products]);
 
@@ -169,8 +158,6 @@ export default function WeeklyBuysClient({
       items.push(
         <ProductCardClient key={`product_${product.id}`} product={product} />
       );
-
-      // Insert ad after every AD_INTERVAL products
       if ((index + 1) % AD_INTERVAL === 0) {
         const adSlot = IN_FEED_SLOTS[(index + 1) / AD_INTERVAL - 1];
         items.push(
@@ -221,25 +208,13 @@ export default function WeeklyBuysClient({
         {productsWithAds}
       </div>
 
-      {/* Sentinel element for infinite scroll */}
-      <div ref={sentinelRef} />
-
-      {readMoreLoading && (
-        <div className="text-center py-4">
-          <span>読み込み中...</span>
-        </div>
-      )}
-
       {sortUpdateLoading && (
-      <div
-        className="fixed inset-0 flex flex-col items-center justify-center bg-gray-900 bg-opacity-80"
-        style={{ zIndex: 1000 }}
-      >
-        <div className="flex items-center mb-4" style={{ width: 150, height: 150 }}>
-          <Lottie animationData={loadingAnimation} loop />
+        <div className="fixed inset-0 flex flex-col items-center justify-center bg-gray-900 bg-opacity-80" style={{ zIndex: 1000 }}>
+          <div className="flex items-center mb-4" style={{ width: 150, height: 150 }}>
+            <Lottie animationData={loadingAnimation} loop />
+          </div>
+          <div className="text-white text-2xl">データ取得中...</div>
         </div>
-        <div className="text-white text-2xl">データ取得中...</div>
-      </div>
       )}
 
       <div className="text-xs text-gray-500 mt-4">
