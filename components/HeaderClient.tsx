@@ -51,7 +51,7 @@ export default function HeaderClient({
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="relative w-48 h-16"
+              className="relative w-52 h-20" // 260x100
             >
               <Image
                 src="/costco-plus-logo.webp"
@@ -59,16 +59,16 @@ export default function HeaderClient({
                 fill
                 style={{ objectFit: "contain" }}
                 priority
-                sizes="(max-width: 640px) 100px, 200px"
+                sizes="(max-width: 680px) 120px, 220px"
               />
             </motion.div>
             <motion.h1
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-blue-300 text-xl md:text-2xl font-bold mt-2 md:mt-4"
+              className="text-red-500 text-xl md:text-2xl font-bold mt-2 md:mt-4"
             >
-              もっとコストコ！
+              今のホットをお届け
               <motion.span
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -78,9 +78,9 @@ export default function HeaderClient({
                   type: "spring",
                   stiffness: 200,
                 }}
-                className="text-red-500"
+                className="text-blue-300"
               >
-                <p>コストコハッカープラス＋</p>
+                <p>コストコプラス＋</p>
               </motion.span>
             </motion.h1>
           </div>
