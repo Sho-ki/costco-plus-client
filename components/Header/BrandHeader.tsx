@@ -7,7 +7,7 @@ export default function BrandHeader() {
       <div className="relative w-48 h-16">
         <a href='/' >
         <Image
-          src="https://ikkoss.com/wp-content/uploads/2022/03/Costco-Hacker-1-2.png"
+          src="/costco-plus-logo.webp"
           alt="Costco Hacker Logo"
           fill
           style={{ objectFit: "contain" }}

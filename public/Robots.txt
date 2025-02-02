@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /loading.json
 
-Sitemap: https://app.ikkoss.com/sitemap.xml
+Sitemap: https://costco-plus.com/sitemap.xml

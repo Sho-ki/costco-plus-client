@@ -25,20 +25,20 @@ export async function generateMetadata() {
   formattedDate = formattedDate.replace('/', '月') + '日';
 
   return {
-  title: "コストコハッカープラス＋ | もっとコストコ！",
+  title: "もっとコストコ！コストコプラス＋",
   description:
     `${formattedDate}更新！コストコの最新セール情報、リアルタイム混雑状況、ガソリン価格をチェック。コストコでのショッピングをより便利に、よりお得に。最終更新日: ${formattedDate}`,
   openGraph: {
-    title: "コストコハッカープラス＋ | もっとコストコ！",
+    title: "もっとコストコ！コストコプラス＋",
     description: `コストコの最新セール情報、リアルタイム混雑状況、ガソリン価格をチェック。最新更新日: ${formattedDate}`,
-    url: "https://app.ikkoss.com/",
-    siteName: "コストコハッカープラス＋",
+    url: "https://costco-plus.com/",
+    siteName: "コストコプラス＋",
     images: [
       {
-        url: "https://ikkoss.com/wp-content/uploads/2022/03/Costco-Hacker-1-2.png", // Open Graph用の画像URL
+        url: "https://costco-plus.com/costco-plus-logo.webp",
         width: 1200,
         height: 630,
-        alt: "コストコハッカープラス＋のロゴ",
+        alt: "コストコプラス＋のロゴ",
       },
     ],
     locale: "ja_JP",
@@ -46,7 +46,7 @@ export async function generateMetadata() {
     updatedTime: new Date().toISOString(),
   },
   alternates: {
-    canonical: "https://app.ikkoss.com/",
+    canonical: "https://costco-plus.com/",
   },
 };
 }
@@ -71,9 +71,9 @@ export default async function Home({ searchParams }: PageProps ) {
     const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "コストコハッカープラス＋",
-    url: "https://app.ikkoss.com/",
-    logo: "https://ikkoss.com/wp-content/uploads/2022/03/Costco-Hacker-1-2.png",
+    name: "コストコプラス＋",
+    url: "https://costco-plus.com/",
+    logo: "https://costco-plus.com/costco-plus-logo.webp",
     sameAs: [
       "https://www.instagram.com/costco_hacker",
       "https://news.yahoo.co.jp/expert/creators/costcohacker",

@@ -4,7 +4,7 @@ import { GasPrice } from '../types/gasPrice';
 import { ProductForUsers } from '../types/product';
 import { Warehouse } from '../types/warehouse';
 
-const baseUrl = 'https://api.ikkoss.com';
+const baseUrl = 'https://api.costco-plus.com';
 export async function fetchWarehouses(): Promise<ApiResponse<Warehouse[]>> {
 	const response = await fetch(`${baseUrl}/v1/warehouses/`);
 	if (!response.ok) {
