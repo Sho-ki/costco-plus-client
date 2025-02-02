@@ -27,7 +27,7 @@ export async function generateMetadata() {
   return {
   title: "コストコハッカープラス＋ | もっとコストコ！",
   description:
-    `${formattedDate}のコストコの最新セール情報、リアルタイム混雑状況、ガソリン価格をチェック。コストコでのショッピングをより便利に、よりお得に。`,
+    `${formattedDate}更新！コストコの最新セール情報、リアルタイム混雑状況、ガソリン価格をチェック。コストコでのショッピングをより便利に、よりお得に。最終更新日: ${formattedDate}`,
   openGraph: {
     title: "コストコハッカープラス＋ | もっとコストコ！",
     description: `コストコの最新セール情報、リアルタイム混雑状況、ガソリン価格をチェック。最新更新日: ${formattedDate}`,

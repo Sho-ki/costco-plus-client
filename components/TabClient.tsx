@@ -4,7 +4,6 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Tabs } from '../lib/tabs';
-import Image from 'next/image';
 
 interface TabsClientProps {
   currentTab: Tabs;
@@ -79,23 +78,28 @@ export default function TabsClient({ currentTab }: TabsClientProps) {
 
       {/* Loading Overlay during transition */}
       {isPending && (
-        <div
+                <div
           className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-80 flex-col"
           style={{ zIndex: 1000 }}
         >
-            {/* gif on top and text below direction column */}
-        <div className='flex items-center'>
-        <Image
-          src="/loading.gif"
-          alt="Loading..."
-          width={150}
-          height={150}
-          className="mb-5"
-        />
-        </div>
+          <div className="flex items-center">
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              width={150}
+              height={150}
+            >
+              <source src="/load.webm" type="video/webm" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
           <div className="text-white text-2xl">データ取得中...</div>
         </div>
+
       )}
+      
     </>
   );
 }

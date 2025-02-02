@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /load.webm
 
 Sitemap: https://app.ikkoss.com/sitemap.xml

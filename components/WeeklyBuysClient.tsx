@@ -1,79 +1,193 @@
-// app/components/WeeklyBuysClient.tsx
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { ProductForUsers } from "../types/product";
 import GoogleAdsense from "./GoogleAdsense";
 import { IN_FEED_SLOTS } from "../lib/inFeedSlots";
-import ProductCardClient from './ProductCardClient';
+import ProductCardClient from "./ProductCardClient";
+import { fetchWeeklyBuys } from "../utils/api";
+import { Pagination } from "../types/apiResponse";
+import { useSearchParams } from "next/navigation";
 
 type SortField = "price" | "discountPercentage";
 type SortOrder = "asc" | "desc";
 
 interface WeeklyBuysClientProps {
+  warehouseId: number;
   initialProducts: ProductForUsers[];
+  initialPagination: Pagination;
   defaultField: SortField;
   defaultOrder: SortOrder;
 }
 
 /**
  * クライアントコンポーネント
- * - ソート順をuseStateで保持
- * - ソート後の配列を生成
- * - スライドごとに広告を挿入
- * - ProductCardClientを表示（クリックでモーダル）
+ * - 初回のページはSSRから受け取る
+ * - ユーザーのスクロールに応じて次ページを取得（無限スクロール）
+ * - ソートが変更された場合はリセットして再取得
+ * - 広告を一定の間隔で挿入
  */
 export default function WeeklyBuysClient({
+  warehouseId,
   initialProducts,
+  initialPagination,
   defaultField,
   defaultOrder,
 }: WeeklyBuysClientProps) {
-  // ソート対象 & オーダーをクライアント側で持つ
+  // ソート対象 & オーダーを保持
   const [sortField, setSortField] = useState<SortField>(defaultField);
   const [sortOrder, setSortOrder] = useState<SortOrder>(defaultOrder);
 
-  // ソートされた配列をuseMemoでキャッシュ
-  const sortedProducts = useMemo(() => {
-    return [...initialProducts].sort((a, b) => {
-      if (sortField === "price") {
-        return sortOrder === "asc" ? a.price - b.price : b.price - a.price;
-      } else {
-        const discountA = a.price && a.discount ? (a.discount / a.price) * 100 : 0;
-        const discountB = b.price && b.discount ? (b.discount / b.price) * 100 : 0;
-        return sortOrder === "asc" ? discountA - discountB : discountB - discountA;
+  // ページネーション用の状態（製品一覧、現在のページ情報、ページサイズ、ロード状態）
+  const [products, setProducts] = useState<ProductForUsers[]>(initialProducts);
+  const [pagination, setPagination] = useState<Pagination>(initialPagination);
+  const pageSize = initialPagination.size; // fixed page size
+  const [readMoreLoading, setReadMoreLoading] = useState<boolean>(false);
+  const [sortUpdateLoading, setSortUpdateLoading] = useState<boolean>(false);
+
+  // Sentinel ref for infinite scroll
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+
+  // A ref to track whether this is the initial render for the sort effect.
+  const initialSortRender = useRef(true);
+
+  // Get current tab from the URL search parameters.
+  const searchParams = useSearchParams();
+  const currentTab = searchParams.get("tab");
+
+  // ------------------------------------------------
+  // Reset initialSortRender when tab changes.
+  // ------------------------------------------------
+  useEffect(() => {
+    // When the tab changes, reset the flag so that if the user returns
+    // to the products tab, the sort effect does not immediately fetch sorted data.
+    initialSortRender.current = true;
+  }, [currentTab]);
+
+  // ------------------------------------------------
+  // Fetch more products when scrolling (infinite scroll)
+  // ------------------------------------------------
+  const loadMore = useCallback(async () => {
+    // Do not fetch if already loading or if all products are loaded
+    if (readMoreLoading || products.length >= pagination.totalCount) return;
+
+    setReadMoreLoading(true);
+    try {
+      const nextPage = pagination.page + 1;
+      const response = await fetchWeeklyBuys(warehouseId, {
+        page: nextPage,
+        size: pageSize,
+        sortField,
+        sortOrder,
+      });
+      // Append new products and update pagination meta
+      setProducts((prev) => [...prev, ...response.data]);
+      setPagination(response.meta);
+    } catch (error) {
+      console.error("Error loading more products:", error);
+    } finally {
+      setReadMoreLoading(false);
+    }
+  }, [readMoreLoading, products, pagination, warehouseId, pageSize, sortField, sortOrder]);
+
+  // Attach Intersection Observer only once
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        loadMore();
       }
     });
-  }, [initialProducts, sortField, sortOrder]);
-
-  // ----------------------------------------------
-  // 広告挿入
-  // ----------------------------------------------
-  const AD_INTERVAL = 12;
-  const productsWithAds: JSX.Element[] = [];
-  sortedProducts.forEach((product, index) => {
-    productsWithAds.push(
-      <ProductCardClient key={`product_${product.id}`} product={product} />
-    );
-
-    if (index !== 0 && (index + 1) % AD_INTERVAL === 0) {
-      productsWithAds.push(
-        <div
-          key={`ad_${index}`}
-          className="col-span-2 md:col-span-2 lg:col-span-3"
-        >
-          <GoogleAdsense
-            type="fluid"
-            slotId={IN_FEED_SLOTS[(index + 1) / AD_INTERVAL - 1]?.dataAdSlot}
-            dataLayoutKey={IN_FEED_SLOTS[(index + 1) / AD_INTERVAL - 1]?.dataLayoutKey}
-          />
-        </div>
-      );
+    const currentSentinel = sentinelRef.current;
+    if (currentSentinel) {
+      observer.observe(currentSentinel);
     }
-  });
+    return () => {
+      if (currentSentinel) {
+        observer.unobserve(currentSentinel);
+      }
+    };
+  }, [loadMore]);
 
-  // ----------------------------------------------
-  // JSX レンダリング
-  // ----------------------------------------------
+  // ------------------------------------------------
+  // When sort options change, reset and fetch page 1
+  // ------------------------------------------------
+  useEffect(() => {
+    // Skip on the very first render OR when the tab has just changed.
+    if (initialSortRender.current) {
+      // Reset the flag and do not fetch sorted data.
+      initialSortRender.current = false;
+      return;
+    }
+    async function fetchSorted() {
+      setSortUpdateLoading(true);
+      try {
+        const response = await fetchWeeklyBuys(warehouseId, {
+          page: 1,
+          size: pageSize,
+          sortField,
+          sortOrder,
+        });
+        // Replace the product list and reset pagination
+        setProducts(response.data);
+        setPagination(response.meta);
+      } catch (error) {
+        console.error("Error fetching sorted products:", error);
+      } finally {
+        setSortUpdateLoading(false);
+      }
+    }
+    fetchSorted();
+  }, [sortField, sortOrder, warehouseId, pageSize]);
+
+  // ------------------------------------------------
+  // Deduplicate products (by product.id)
+  // ------------------------------------------------
+  const uniqueProducts = useMemo(() => {
+    const seen = new Set<number>();
+    return products.filter((product) => {
+      if (seen.has(product.id)) {
+        return false;
+      } else {
+        seen.add(product.id);
+        return true;
+      }
+    });
+  }, [products]);
+
+  // ------------------------------------------------
+  // Insert ads every AD_INTERVAL products
+  // ------------------------------------------------
+  const AD_INTERVAL = 12;
+  const productsWithAds = useMemo(() => {
+    const items: JSX.Element[] = [];
+    uniqueProducts.forEach((product, index) => {
+      items.push(
+        <ProductCardClient key={`product_${product.id}`} product={product} />
+      );
+
+      // Insert ad after every AD_INTERVAL products
+      if ((index + 1) % AD_INTERVAL === 0) {
+        const adSlot = IN_FEED_SLOTS[(index + 1) / AD_INTERVAL - 1];
+        items.push(
+          <div
+            key={`ad_${index}`}
+            className="col-span-2 md:col-span-2 lg:col-span-3"
+          >
+            <GoogleAdsense
+              type="fluid"
+              slotId={adSlot?.dataAdSlot}
+              dataLayoutKey={adSlot?.dataLayoutKey}
+            />
+          </div>
+        );
+      }
+    });
+    return items;
+  }, [uniqueProducts]);
+
+  // ------------------------------------------------
+  // JSX Rendering
+  // ------------------------------------------------
   return (
     <>
       {/* ソートのセレクトボックス */}
@@ -102,8 +216,41 @@ export default function WeeklyBuysClient({
         {productsWithAds}
       </div>
 
+      {/* Sentinel element for infinite scroll */}
+      <div ref={sentinelRef} />
+
+      {readMoreLoading && (
+        <div className="text-center py-4">
+          <span>読み込み中...</span>
+        </div>
+      )}
+
+      {sortUpdateLoading && (
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-80 flex-col"
+          style={{ zIndex: 1000 }}
+        >
+          <div className="flex items-center">
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              width={150}
+              height={150}
+            >
+              <source src="/load.webm" type="video/webm" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div className="text-white text-2xl">データ取得中...</div>
+        </div>
+      )}
+
       <div className="text-xs text-gray-500 mt-4">
-        <p>※ 在庫状況はユーザーの皆さまからの報告に基づいており、在庫を保証するものではありません。</p>
+        <p>
+          ※ 在庫状況はユーザーの皆さまからの報告に基づいており、在庫を保証するものではありません。
+        </p>
         <p>
           ※ 一部画像は{" "}
           <a
@@ -119,150 +266,3 @@ export default function WeeklyBuysClient({
     </>
   );
 }
-
-// "use client";
-
-// import { useState, useEffect } from "react";
-// import { fetchWeeklyBuys } from "../utils/api";
-// import ProductCard from "./ProductCard";
-// import { ProductForUsers } from "../types/product";
-// import GoogleAdsense from "./GoogleAdsense";
-// import { IN_FEED_SLOTS } from "../lib/inFeedSlots";
-
-// interface WeeklyBuysClientProps {
-//   warehouseId: number;
-//   field: "price" | "discountPercentage";
-//   order: "asc" | "desc";
-// }
-
-// export default function WeeklyBuysClient({
-//   warehouseId,
-//   field,
-//   order,
-// }: WeeklyBuysClientProps) {
-//   // ----------------------------
-//   // ① 初回のみデータをfetch
-//   // ----------------------------
-//   const [products, setProducts] = useState<ProductForUsers[]>([]);
-//   const [sortedProducts, setSortedProducts] = useState<ProductForUsers[]>([]);
-//   const [loading, setLoading] = useState<boolean>(true);
-//   const [error, setError] = useState<string | null>(null);
-
-//   useEffect(() => {
-//     let isMounted = true;
-//     setLoading(true);
-//     setError(null);
-
-//     fetchWeeklyBuys(warehouseId)
-//       .then((weeklyBuysData) => {
-//         if (!isMounted) return;
-//         // fetchで受け取ったデータをそのまま保持
-//         setProducts(weeklyBuysData.data);
-//         setLoading(false);
-//       })
-//       .catch((err) => {
-//         if (isMounted) {
-//           setError("Error loading products");
-//           setLoading(false);
-//         }
-//       });
-
-//     // Cleanup
-//     return () => {
-//       isMounted = false;
-//     };
-//     // [warehouseId] のみ依存 → 倉庫店が変わった時にだけ fetch
-//   }, [warehouseId]);
-
-//   // ----------------------------
-//   // ② ソート順が変わったら再ソート
-//   // ----------------------------
-//   useEffect(() => {
-//     if (!products.length) return;
-
-//     // もとの products を複製してソート（破壊的変更を避ける）
-//     const newSorted = [...products].sort((a, b) => {
-//       if (field === "price") {
-//         return order === "asc" ? a.price - b.price : b.price - a.price;
-//       } else {
-//         // field === 'discountPercentage'
-//         const discountA =
-//           a.price && a.discount ? (a.discount / a.price) * 100 : 0;
-//         const discountB =
-//           b.price && b.discount ? (b.discount / b.price) * 100 : 0;
-//         return order === "asc" ? discountA - discountB : discountB - discountA;
-//       }
-//     });
-
-//     setSortedProducts(newSorted);
-//     // products, field, order が変わったらソートし直す
-//   }, [products, field, order]);
-
-//   // ----------------------------
-//   // ローディング・エラー表示
-//   // ----------------------------
-//   if (loading) return <div>データを取得中...</div>;
-//   if (error) return <div>{error}</div>;
-
-//   // ----------------------------
-//   // 商品 + 広告の配列を作成
-//   // ----------------------------
-//   const AD_INTERVAL = 12; // 12件ごとに広告を挿入（任意で変更可能）
-
-//   /**
-//    * reduce を使って、全ての ProductCard を追加しながら
-//    * 7件ごと(あるいは任意の件数ごと)に広告を挿入する。
-//    */
-//   const productsWithAds = sortedProducts.reduce<JSX.Element[]>(
-//     (acc, product, index) => {
-//       // 1) 常に ProductCard は追加
-//       acc.push(
-//         <ProductCard
-//           key={`product_${product.id}`} // 商品毎にユニークキー
-//           product={product}
-//         />
-//       );
-
-//       // 2) 12件ごとに広告を追加（商品をスキップしない）
-//       //    (index + 1) が 12 の倍数になった時に広告
-//       if (index !== 0 && (index + 1) % AD_INTERVAL === 0) {
-//         acc.push(
-//           <div
-//             key={`ad_${index}`}
-//             // 広告は全ての列を占めるように（モバイル2列分～デスクトップ3列分）
-//             className="col-span-2 md:col-span-2 lg:col-span-3"
-//           >
-//             <GoogleAdsense type="fluid" slotId={IN_FEED_SLOTS[(index+1) / AD_INTERVAL - 1]?.dataAdSlot} dataLayoutKey={IN_FEED_SLOTS[(index+1) / AD_INTERVAL - 1]?.dataLayoutKey} />
-//           </div>
-//         );
-//       }
-//       return acc;
-//     },
-//     []
-//   );
-
-//   return (
-//     <>
-//       {/* 商品一覧 + 広告を含むグリッド */}
-//       <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
-//         {productsWithAds}
-//       </div>
-
-//       {/* 注意書きや免責事項など */}
-//       <div className="text-xs text-gray-500 mt-4">
-//         <p>※ 在庫状況はユーザーの皆さまからの報告に基づいており、在庫を保証するものではありません。</p>
-//         <p>
-//           ※ 一部画像は コストコ公式サイト{" "}
-//           <a
-//             href="https://www.costco.co.jp/"
-//             target="_blank"
-//             rel="noopener noreferrer"
-//           >
-//             https://www.costco.co.jp/
-//           </a>{" "}
-//           から引用しています。
-//         </p>
-//       </div>
-//     </>
-//   );
-// }

@@ -5,7 +5,6 @@ import GoogleAdsense from "../components/GoogleAdsense";
 import Script from "next/script";
 
 import Footer from "../components/Footer";
-import Link from 'next/link';
 
 const geistSans = Gabarito({
   variable: "--font-geist-sans",
