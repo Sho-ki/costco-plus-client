@@ -151,7 +151,7 @@ export default function WeeklyBuysClient({
   // ------------------------------------------------
   // Insert ads every AD_INTERVAL products
   // ------------------------------------------------
-  const AD_INTERVAL = 12;
+  const AD_INTERVAL = 100;
   const productsWithAds = useMemo(() => {
     const items: JSX.Element[] = [];
     uniqueProducts.forEach((product, index) => {
