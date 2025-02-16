@@ -1,5 +1,4 @@
 import { fetchWeeklyBuys } from "../utils/api";
-import { ProductForUsers } from "../types/product";
 import WeeklyBuysClient from "./WeeklyBuysClient";
 
 interface WeeklyBuysServerProps {

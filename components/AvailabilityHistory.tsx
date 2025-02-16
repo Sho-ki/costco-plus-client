@@ -1,5 +1,4 @@
 import { DateTime } from 'luxon';
-import { formatDate } from "../utils/dateUtils";
 import { Check, X, HelpCircle } from "lucide-react";
 
 interface AvailabilityHistoryProps {
