@@ -55,7 +55,7 @@ export default function TabsClient({ currentTab }: TabsClientProps) {
             >
               みんなの
               <br />
-              在庫速報・質問
+              在庫速報
             </button>
           <button
             onClick={() => handleTabClick(Tabs.Crowdedness)}
