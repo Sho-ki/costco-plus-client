@@ -1,32 +1,41 @@
 import { DateTime } from 'luxon';
 
 export function timeAgo(dateString: string): string {
-	// ISO 形式の文字列をパース
 	const dt = DateTime.fromISO(dateString);
 	const now = DateTime.local();
 
-	// 24時間以内の処理
-	const diffHours = now.diff(dt, 'hours').hours;
-	if (diffHours < 24) {
-		if (diffHours < 1) {
-			return '1時間以内';
-		} else {
-			return `${Math.floor(diffHours)}時間前`;
-		}
+	const diffInSeconds = now.diff(dt, 'seconds').seconds;
+	const diffInMinutes = now.diff(dt, 'minutes').minutes;
+	const diffInHours = now.diff(dt, 'hours').hours;
+	const diffInDays = now.diff(dt, 'days').days;
+
+	if (diffInSeconds < 60) {
+		return 'たった今';
 	}
 
-	// 24時間以上の場合は日数で計算
-	const diffDays = now.diff(dt, 'days').days;
-	if (diffDays < 30) {
-		return `${Math.floor(diffDays)}日前`;
+	if (diffInMinutes < 60) {
+		const minutes = Math.floor(diffInMinutes);
+		return `${minutes}分前`;
 	}
-	if (diffDays < 75) {
+
+	if (diffInHours < 24) {
+		const hours = Math.floor(diffInHours);
+		return `${hours}時間前`;
+	}
+
+	if (diffInDays < 30) {
+		const days = Math.floor(diffInDays);
+		return `${days}日前`;
+	}
+
+	if (diffInDays < 75) {
 		return '1ヶ月前';
 	}
-	if (diffDays < 365) {
-		return `${Math.floor(diffDays / 30)}ヶ月前`;
+	if (diffInDays < 365) {
+		const months = Math.floor(diffInDays / 30);
+		return `${months}ヶ月前`;
 	}
-	if (diffDays < 365 * 2) {
+	if (diffInDays < 365 * 2) {
 		return '1年前';
 	}
 	return '1年以上前';

@@ -82,7 +82,7 @@ export default async function Home() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </Head>
-      <div className="min-h-screen bg-gray-100">
+      <div className="min-h-screen">
         <Suspense fallback={<div>データを取得中...</div>}>
           <div className="py-4 sm:px-0">
           <WeeklyBuysServer warehouseId={warehouseId} field="discountPercentage" order="desc" />

@@ -1,5 +1,4 @@
 import { ApiResponse } from '../types/apiResponse';
-import { CommentToPost } from '../types/comment-to-post';
 import { CrowdData } from '../types/crowdness';
 import { GasPrice } from '../types/gasPrice';
 import { Post } from '../types/post';

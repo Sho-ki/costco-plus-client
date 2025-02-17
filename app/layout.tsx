@@ -9,6 +9,7 @@ import { fetchWarehouses } from "../utils/api";
 import { cookies, headers } from "next/headers";
 import TabsClient from '../components/TabClient';
 import { Tabs } from '../lib/tabs';
+import GoogleAdsense from '../components/GoogleAdsense';
 
 const geistSans = Gabarito({
   variable: "--font-geist-sans",
@@ -34,7 +35,7 @@ export default async function RootLayout({
   const gaId = process.env.GA_ID || "";
   const pId = process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_PUBLISHER_ID;
   const headersList = await headers();
-  const path:Tabs = headersList.get('x-pathname')?.replace('/', '') as Tabs;
+  const path:Tabs = headersList.get('x-pathname')?.replace('/', '') as Tabs || Tabs.Sale
   // サーバー側で倉庫データを取得
   const { data: warehouses } = await fetchWarehouses();
   const cookieStore = cookies();

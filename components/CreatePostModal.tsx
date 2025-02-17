@@ -3,7 +3,6 @@
 
 import { useState, useEffect } from "react";
 import Modal from "react-modal";
-import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import { createPost, fetchPostTypes } from "../utils/api";
 
@@ -46,7 +45,9 @@ export default function CreatePostModal({
         console.error("Failed to load post types", error);
       }
     }
-    loadPostTypes();
+    if(postTypes.length === 0){
+        loadPostTypes();
+    }
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {

@@ -62,7 +62,7 @@ export default async function PostPage({ searchParams }: PageProps) {
           content="ユーザー投稿に基づく最新の在庫状況や質問をリアルタイムにチェックできます。"
         />
       </Head>
-      <h1 className="text-3xl font-bold mb-4 ml-1">在庫状況・質問</h1>
+      <h1 className="text-3xl font-bold mb-4 ml-1">みんなの在庫速報・質問</h1>
       <div className="text-sm leading-6 ml-1">
         <p>匿名で商品の在庫状況や質問、感想を投稿できます。</p>
         <p>ご自身の倉庫店を選択してからご利用ください。</p>

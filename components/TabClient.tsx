@@ -6,7 +6,6 @@ import { Tabs } from "../lib/tabs";
 import dynamic from "next/dynamic";
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 import loadingAnimation from "../public/loading.json";
-import Link from "next/link";
 
 interface TabsClientProps {
   currentTab: Tabs;
@@ -16,7 +15,6 @@ interface TabsClientProps {
  * タブクリック時にページ遷移しつつ、ローディングを表示
  */
 export default function TabsClient({ currentTab }: TabsClientProps) {
-    console.log('currentTab: ', currentTab);
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<Tabs>(currentTab);
   const [isPending, startTransition] = useTransition();
@@ -36,9 +34,9 @@ export default function TabsClient({ currentTab }: TabsClientProps) {
       <div className="flex justify-center mb-4">
         <div className="inline-flex rounded-md shadow-sm" role="group">
           <button
-            onClick={() => handleTabClick(Tabs.Products)}
-            className={`px-4 py-2 text-sm font-medium ${
-              activeTab === Tabs.Products
+            onClick={() => handleTabClick(Tabs.Sale)}
+            className={`px-3 py-2 text-sm font-medium ${
+              activeTab === Tabs.Sale
                 ? "bg-blue-600 text-white"
                 : "bg-white text-gray-700 hover:bg-gray-50"
             }`}
@@ -47,6 +45,18 @@ export default function TabsClient({ currentTab }: TabsClientProps) {
             <br />
             セール情報
           </button>
+            <button
+             onClick={() => handleTabClick(Tabs.Post)}
+              className={`px-4 py-2 text-sm font-medium ${
+                activeTab === Tabs.Post
+                  ? "bg-blue-600 text-white"
+                  : "bg-white text-gray-700 hover:bg-gray-50"
+              }`}
+            >
+              みんなの
+              <br />
+              在庫速報・質問
+            </button>
           <button
             onClick={() => handleTabClick(Tabs.Crowdedness)}
             className={`px-4 py-2 text-sm font-medium ${
@@ -71,20 +81,6 @@ export default function TabsClient({ currentTab }: TabsClientProps) {
             <br />
             ガソリン代
           </button>
-          <Link href="/post">
-            <button
-             onClick={() => handleTabClick(Tabs.Post)}
-              className={`px-4 py-2 text-sm font-medium ${
-                activeTab === Tabs.Post
-                  ? "bg-blue-600 text-white"
-                  : "bg-white text-gray-700 hover:bg-gray-50"
-              }`}
-            >
-              今日の
-              <br />
-              在庫状況、質問
-            </button>
-          </Link>
         </div>
       </div>
 

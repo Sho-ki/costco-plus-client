@@ -1,4 +1,3 @@
-// app/components/PostModal.tsx
 "use client";
 
 import React, { useState } from "react";
@@ -6,30 +5,31 @@ import { X } from "lucide-react";
 import dynamic from "next/dynamic";
 import { PostWithComments } from "../types/post-with-comments";
 import { timeAgo } from "../utils/timeAgo";
-
-// Lottie を動的インポート（クライアント専用）
-const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 import loadingAnimation from "../public/loading.json";
 import { createComment } from '../utils/api';
+
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 interface PostModalProps {
   post: PostWithComments;
   onClose: () => void;
+  // 親から受け取るコールバックを追加
+  onCommentAdded?: (postId: number) => void;
 }
 
-export default function PostModal({ post, onClose }: PostModalProps) {
-  // 初期コメントが存在しない場合は空配列を利用
+export default function PostModal({ post, onClose, onCommentAdded }: PostModalProps) {
+  // 既存のコメント管理
   const initialComments = post.comments || [];
   const [commentsState, setCommentsState] = useState(initialComments);
+
   const topLevelComments = commentsState.filter((c) => c.parentId === null);
   const getReplies = (parentId: number) =>
     commentsState.filter((c) => c.parentId === parentId);
 
-  // コメント入力の状態と送信中フラグ
+  // コメント入力
   const [commentText, setCommentText] = useState("");
   const [isSending, setIsSending] = useState(false);
 
-  // 送信処理
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const trimmed = commentText.trim();
@@ -39,12 +39,16 @@ export default function PostModal({ post, onClose }: PostModalProps) {
     try {
       const response = await createComment(post.id, trimmed);
       const newComment = response.data;
-      // 新規コメントをリストに追加
+      // ローカルのコメント一覧に追加
       setCommentsState((prev) => [...prev, newComment]);
       setCommentText("");
+
+      // ★ 親に「コメントが増えたよ」と通知する
+      if (onCommentAdded) {
+        onCommentAdded(post.id);
+      }
     } catch (error) {
       console.error(error);
-      // 必要に応じてエラーメッセージの表示などを実装
     } finally {
       setIsSending(false);
     }
@@ -63,6 +67,8 @@ export default function PostModal({ post, onClose }: PostModalProps) {
           <X className="w-6 h-6" />
         </button>
         <h2 className="text-2xl font-bold mb-4">{post.content}</h2>
+        
+        {/* コメント一覧表示 */}
         <section className="flex-1">
           <h3 className="text-xl font-semibold mb-2">コメント</h3>
           {topLevelComments.length === 0 ? (

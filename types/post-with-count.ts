@@ -1,3 +1,5 @@
+import { PostType } from './post-type';
+
 export interface Reaction {
 	id: number;
 	name: string;
@@ -10,11 +12,7 @@ export interface PostWithCount {
 	content: string;
 	warehouseId: number;
 	postTypeId: number;
-	postType: {
-		id: number;
-		name: string;
-		createdAt: string;
-	};
+	postType: PostType;
 	createdAt: string;
 	reactions: Reaction[];
 	commentCounts: number;

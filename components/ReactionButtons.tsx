@@ -120,6 +120,7 @@ export function ReactionButtons({ post, onReaction }: ReactionButtonsProps) {
 
     updatingLock.current = true;
     setIsUpdating(true);
+    setSelectedReactionId(reaction.id);
 
     // 楽観的更新：前回選択していた反応があれば count を減らし、新たな反応の count を増やす
     setReactions((prev) =>
@@ -153,7 +154,6 @@ export function ReactionButtons({ post, onReaction }: ReactionButtonsProps) {
         reactionRecordId: newRecord.id,
       });
       updateStoredReactions(updated);
-      setSelectedReactionId(reaction.id);
       if (onReaction) onReaction(post.id, reaction.id);
     } catch (error) {
       console.error("Failed to send/update reaction", error);
@@ -206,7 +206,7 @@ export function ReactionButtons({ post, onReaction }: ReactionButtonsProps) {
     <div className="flex justify-around items-center space-x-4">
       {reactions.map((reaction) => (
         <div key={reaction.id} className="flex flex-col items-center space-y-1">
-          <span className="text-[7px] sm:text-[10px]">
+          <span className="text-[8px] sm:text-[12px]">
             {getLabelForReaction(reaction.name)}
           </span>
           <button
@@ -223,7 +223,7 @@ export function ReactionButtons({ post, onReaction }: ReactionButtonsProps) {
           >
             {getIconForReaction(reaction.name)}
           </button>
-          <span className="text-[7px] sm:text-[10px]">{reaction.count}</span>
+          <span className="text-[8px] sm:text-[12px]">{reaction.count}</span>
         </div>
       ))}
     </div>

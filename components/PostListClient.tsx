@@ -78,15 +78,24 @@ export default function PostListClient({
     window.addEventListener("popstate", onPopState);
     return () => window.removeEventListener("popstate", onPopState);
   }, []);
+  
+  const handleCommentAdded = (postId: number) => {
+    setPosts((prev) =>
+      prev.map((p) => {
+        if (p.id === postId) {
+          return { ...p, commentCounts: p.commentCounts + 1 };
+        }
+        return p;
+      })
+    );
+  };
 
   const handleClickPost = (post: any) => {
     const slugPart = slugify(post.content.slice(0, 50));
-    // Update URL without triggering a full re-render.
     window.history.pushState({}, "", `/post?postId=${post.id}&slug=${slugPart}`);
     setSelectedPostId(post.id);
     setIsModalOpen(true);
 
-    // If the same post is already loaded, do nothing.
     if (selectedPostId === post.id && selectedPostDetail) return;
 
     fetchPostById(post.id)
@@ -114,7 +123,12 @@ export default function PostListClient({
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
           {selectedPostDetail ? (
-            <PostModal post={selectedPostDetail} onClose={closeModal} />
+            // ★ PostModal に onCommentAdded を渡す
+            <PostModal 
+              post={selectedPostDetail} 
+              onClose={closeModal}
+              onCommentAdded={handleCommentAdded}
+            />
           ) : (
             <div className="bg-white p-6 rounded shadow-lg max-w-3xl w-full">
               <p>データを取得中...</p>
@@ -122,9 +136,8 @@ export default function PostListClient({
           )}
         </div>
       )}
-        {!isModalOpen && (
-        <StickyCreatePostButton warehouseId={warehouseId} />
-      )}
+
+      {!isModalOpen && <StickyCreatePostButton warehouseId={warehouseId} />}
     </div>
   );
 }
