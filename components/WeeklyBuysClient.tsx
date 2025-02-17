@@ -74,7 +74,7 @@ export default function WeeklyBuysClient({
     if (readMoreLoading || products.length >= pagination.totalCount) return;
     setReadMoreLoading(true);
     try {
-      const nextPage = pagination.page + 1;
+      const nextPage = pagination.page + 12;
       const response = await fetchWeeklyBuys(warehouseId, {
         page: nextPage,
         size: pageSize,
