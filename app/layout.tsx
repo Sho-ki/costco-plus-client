@@ -84,6 +84,7 @@ export default async function RootLayout({
         <TabsClient currentTab={path} />
         </div>
         <main className="max-w-7xl mx-auto sm:px-6 lg:px-8">{children}</main>
+        <GoogleAdsense />
         <Footer />
       </body>
     </html>
