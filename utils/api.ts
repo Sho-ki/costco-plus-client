@@ -1,12 +1,14 @@
 import { ApiResponse } from '../types/apiResponse';
+import { CommentToPost } from '../types/comment-to-post';
 import { CrowdData } from '../types/crowdness';
 import { GasPrice } from '../types/gasPrice';
 import { Post } from '../types/post';
 import { PostReactionType } from '../types/post-reaction-type';
 import { PostType } from '../types/post-type';
-import { PostWithComments } from '../types/post-with-comments';
+import { PostComment, PostWithComments } from '../types/post-with-comments';
 import { PostWithCount } from '../types/post-with-count';
 import { ProductForUsers } from '../types/product';
+import { PostReactionRecord } from '../types/reaction-record';
 import { Warehouse } from '../types/warehouse';
 
 const baseUrl = 'https://api.costco-plus.com';
@@ -104,7 +106,7 @@ export async function fetchPosts(
 		page: number;
 		size: number;
 		sortField: string;
-		sortOrder: string;
+		order: string;
 		typeFilter: string;
 	}
 ): Promise<ApiResponse<PostWithCount[]>> {
@@ -113,7 +115,7 @@ export async function fetchPosts(
 		page: options.page.toString(),
 		size: options.size.toString(),
 		sortField: options.sortField,
-		sortOrder: options.sortOrder,
+		order: options.order,
 		typeFilter: options.typeFilter,
 	});
 	const res = await fetch(`${baseUrl}/v1/posts?${params.toString()}`, {
@@ -159,6 +161,49 @@ export async function fetchPostReactionTypes(): Promise<ApiResponse<PostReaction
 	const res = await fetch(`${baseUrl}/v1/post_reaction_types`, {});
 	if (!res.ok) {
 		throw new Error('Failed to fetch post details');
+	}
+	return await res.json();
+}
+
+export async function createComment(postId: number, comment: string): Promise<ApiResponse<PostComment>> {
+	const res = await fetch(`${baseUrl}/v1/posts/${postId}/comments`, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ comment }),
+	});
+	if (!res.ok) {
+		throw new Error('Failed to create post');
+	}
+	return await res.json();
+}
+
+export async function postReactionRecord(
+	postId: number,
+	postReactionTypeId: number
+): Promise<ApiResponse<PostReactionRecord>> {
+	const res = await fetch(`${baseUrl}/v1/posts/${postId}/reaction_records`, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ postReactionTypeId }),
+	});
+	if (!res.ok) {
+		throw new Error('Failed to post reaction');
+	}
+	return await res.json();
+}
+
+export async function updateReactionRecord(
+	postId: number,
+	postReactionTypeId: number,
+	reactionRecordId: number
+): Promise<ApiResponse<PostReactionRecord>> {
+	const res = await fetch(`${baseUrl}/v1/posts/${postId}/reaction_records/${reactionRecordId}`, {
+		method: 'PUT',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ postReactionTypeId }),
+	});
+	if (!res.ok) {
+		throw new Error('Failed to post reaction');
 	}
 	return await res.json();
 }

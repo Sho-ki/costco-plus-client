@@ -18,13 +18,17 @@ export default function StickyCreatePostButton({
 
   return (
     <>
+    {
+        !isModalOpen && (
+        <button
+          onClick={openModal}
+          className="fixed bottom-8 right-4 bg-blue-600 text-white px-4 py-2 rounded shadow-lg z-50"
+        >
+            ＋投稿する
+        </button>
+        )
+    }
       {/* stickyかつfixedで画面右下に配置 */}
-      <button
-        onClick={openModal}
-        className="fixed bottom-4 right-4 bg-blue-600 text-white px-4 py-2 rounded shadow-lg z-50"
-      >
-        ＋投稿する
-      </button>
       <CreatePostModal
         warehouseId={warehouseId}
         isOpen={isModalOpen}

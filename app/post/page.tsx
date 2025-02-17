@@ -3,7 +3,6 @@ import Head from "next/head";
 import { cookies } from "next/headers";
 import { fetchPostById, fetchPosts, fetchWarehouses } from "../../utils/api";
 import PostListClient from '../../components/PostListClient';
-import StickyCreatePostButton from '../../components/StickyCreatePostButton';
 
 export async function generateMetadata() {
   return {
@@ -40,7 +39,7 @@ export default async function PostPage({ searchParams }: PageProps) {
     page: 1,
     size: 10,
     sortField: "createdAt",
-    sortOrder: "desc",
+    order: "desc",
     typeFilter: "all",
   });
 
@@ -63,7 +62,11 @@ export default async function PostPage({ searchParams }: PageProps) {
           content="ユーザー投稿に基づく最新の在庫状況や質問をリアルタイムにチェックできます。"
         />
       </Head>
-      <h1 className="text-3xl font-bold mb-4">在庫状況・質問</h1>
+      <h1 className="text-3xl font-bold mb-4 ml-1">在庫状況・質問</h1>
+      <div className="text-sm leading-6 ml-1">
+        <p>匿名で商品の在庫状況や質問、感想を投稿できます。</p>
+        <p>ご自身の倉庫店を選択してからご利用ください。</p>
+      </div>
       <PostListClient
         warehouseId={initialWarehouseId}
         initialPosts={postsResponse.data}
@@ -74,7 +77,13 @@ export default async function PostPage({ searchParams }: PageProps) {
         }}
         initialSelectedPostDetail={initialSelectedPostDetail}
       />
-      <StickyCreatePostButton warehouseId={initialWarehouseId} />
+      <div className="mt-2 text-sm leading-6 ml-1">
+        <p>注意事項：</p>
+        <ul className="list-disc list-inside">
+          <li>誹謗中傷や公序良俗に反する内容の投稿、個人情報や特定の個人を特定できる情報の記載は禁止です。</li>
+          <li>投稿内容に関する問題が発生した場合、管理者は投稿内容を削除することがあります。</li>
+        </ul>
+      </div>
     </>
   );
   

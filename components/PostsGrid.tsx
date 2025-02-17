@@ -3,6 +3,7 @@
 import React from "react";
 import { PostWithCount } from "../types/post-with-count";
 import { ReactionButtons } from './ReactionButtons';
+import { timeAgo } from '../utils/timeAgo';
 
 /**
  * PostsGrid コンポーネント
@@ -28,11 +29,11 @@ export default function PostsGrid({ posts, onClickPost }: PostsGridProps) {
         return (
             <div
                 key={post.id}
-                className="bg-white rounded-lg shadow-md cursor-pointer hover:shadow-lg transition flex flex-col w-full h-48 sm:h-40"
+                className="bg-white rounded-lg shadow-md cursor-pointer hover:shadow-lg transition flex flex-col w-full h-52 sm:h-48"
                 onClick={() => onClickPost?.(post)}
                 >
                 {/* 上部のテキストエリア（残りのスペースを使用） */}
-                <div className="p-4 flex-1 overflow-hidden content-center">
+                <div className="p-4 flex-1 overflow-hidden content-center h-24">
                     <h3 className="text-xs sm:text-sm font-medium text-gray-900 overflow-hidden text-ellipsis leading-tight">
                     {truncatedContent}
                     </h3>
@@ -43,6 +44,9 @@ export default function PostsGrid({ posts, onClickPost }: PostsGridProps) {
                     <ReactionButtons post={post} />
                     </div>
                 </div>
+                <p className="h-3 text-[7px] sm:text-[10px] text-gray-600 text-right pr-4 mb-2">
+                    {timeAgo(post.createdAt)}
+                </p>
                 {/* 下部の返信エリア（高さを固定） */}
                 <div className="bg-gray-800 flex items-center justify-between px-4 rounded-b-lg h-10">
                     <div className="text-xs sm:text-sm text-white font-medium">返信 ({post.commentCounts})</div>

@@ -5,6 +5,7 @@ import { fetchPosts, fetchPostById } from "../utils/api";
 import PostsGrid from "./PostsGrid";
 import { slugify } from "../utils/slugify";
 import PostModal from "./PostModal";
+import StickyCreatePostButton from './StickyCreatePostButton';
 
 interface PostListClientProps {
   warehouseId: number;
@@ -43,7 +44,7 @@ export default function PostListClient({
         page: nextPage,
         size: pagination.size,
         sortField: "createdAt",
-        sortOrder: "desc",
+        order: "desc",
         typeFilter: "all",
       });
       setPosts((prev) => [...prev, ...response.data]);
@@ -109,7 +110,7 @@ export default function PostListClient({
   return (
     <div>
       <PostsGrid posts={posts} onClickPost={handleClickPost} />
-      {loadingMore && <p className="text-center mt-4 text-gray-700">Loading...</p>}
+      {loadingMore && <p className="text-center mt-4 text-gray-700">データ取得中...</p>}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
           {selectedPostDetail ? (
@@ -120,6 +121,9 @@ export default function PostListClient({
             </div>
           )}
         </div>
+      )}
+        {!isModalOpen && (
+        <StickyCreatePostButton warehouseId={warehouseId} />
       )}
     </div>
   );
