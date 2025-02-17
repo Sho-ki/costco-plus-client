@@ -34,7 +34,7 @@ export default function HomeServer({
       {/* SSR tab content. Will be updated once the page is re-fetched 
           with the new `?tab=...`.
       */}
-      {currentTab === Tabs.Products && (
+      {currentTab === Tabs.Sale && (
         <div className="px-4 py-4 sm:px-0">
           <WeeklyBuysServer
             warehouseId={selectedWarehouseId}

@@ -213,7 +213,6 @@ export default function WeeklyBuysClient({
         </div>
       )}
 
-
       {sortUpdateLoading && (
         <div className="fixed inset-0 flex flex-col items-center justify-center bg-gray-900 bg-opacity-80" style={{ zIndex: 1000 }}>
           <div className="flex items-center mb-4" style={{ width: 150, height: 150 }}>

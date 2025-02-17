@@ -1,61 +1,62 @@
-// app/components/TabsClient.tsx
 "use client";
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Tabs } from '../lib/tabs';
+import { Tabs } from "../lib/tabs";
 import dynamic from "next/dynamic";
-
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 import loadingAnimation from "../public/loading.json";
-
 
 interface TabsClientProps {
   currentTab: Tabs;
 }
 
 /**
- * Using React's `useTransition` to show a loading overlay 
- * while we wait for the new route (SSR) to be fetched.
+ * タブクリック時にページ遷移しつつ、ローディングを表示
  */
 export default function TabsClient({ currentTab }: TabsClientProps) {
   const router = useRouter();
-
-  // Local state for instant highlight
   const [activeTab, setActiveTab] = useState<Tabs>(currentTab);
-
-  // useTransition provides `isPending` and a `startTransition` function
   const [isPending, startTransition] = useTransition();
 
   const handleTabClick = (tab: Tabs) => {
-    if (tab === activeTab) return; // no change
-
-    // Update the highlight right away
+    if (tab === activeTab) return;
     setActiveTab(tab);
-
-    // Start a transition for the route change
     startTransition(() => {
-      // Next.js will fetch the new SSR data
-      router.push(`/?tab=${tab}`);
+      const target = `/${tab}`;
+      router.push(target);
     });
   };
 
   return (
     <>
-      {/* Tab Buttons */}
+      {/* タブボタン群 */}
       <div className="flex justify-center mb-4">
         <div className="inline-flex rounded-md shadow-sm" role="group">
           <button
-            onClick={() => handleTabClick(Tabs.Products)}
-            className={`px-4 py-2 text-sm font-medium ${
-              activeTab === Tabs.Products
+            onClick={() => handleTabClick(Tabs.Sale)}
+            className={`px-3 py-2 text-sm font-medium ${
+              activeTab === Tabs.Sale
                 ? "bg-blue-600 text-white"
                 : "bg-white text-gray-700 hover:bg-gray-50"
             }`}
           >
-            今週の<br />
+            今週の
+            <br />
             セール情報
           </button>
+            <button
+             onClick={() => handleTabClick(Tabs.Post)}
+              className={`px-4 py-2 text-sm font-medium ${
+                activeTab === Tabs.Post
+                  ? "bg-blue-600 text-white"
+                  : "bg-white text-gray-700 hover:bg-gray-50"
+              }`}
+            >
+              みんなの
+              <br />
+              在庫速報・質問
+            </button>
           <button
             onClick={() => handleTabClick(Tabs.Crowdedness)}
             className={`px-4 py-2 text-sm font-medium ${
@@ -64,7 +65,8 @@ export default function TabsClient({ currentTab }: TabsClientProps) {
                 : "bg-white text-gray-700 hover:bg-gray-50"
             }`}
           >
-            現在の<br />
+            現在の
+            <br />
             混雑状況
           </button>
           <button
@@ -75,26 +77,25 @@ export default function TabsClient({ currentTab }: TabsClientProps) {
                 : "bg-white text-gray-700 hover:bg-gray-50"
             }`}
           >
-            今日の<br />
+            今日の
+            <br />
             ガソリン代
           </button>
         </div>
       </div>
 
-      {/* Loading Overlay during transition */}
+      {/* 遷移中のローディングオーバーレイ */}
       {isPending && (
-      <div
-        className="fixed inset-0 flex flex-col items-center justify-center bg-gray-900 bg-opacity-80"
-        style={{ zIndex: 1000 }}
-      >
-        <div className="flex items-center mb-4" style={{ width: 150, height: 150 }}>
-          <Lottie animationData={loadingAnimation} loop />
+        <div
+          className="fixed inset-0 flex flex-col items-center justify-center bg-gray-900 bg-opacity-80"
+          style={{ zIndex: 1000 }}
+        >
+          <div className="flex items-center mb-4" style={{ width: 150, height: 150 }}>
+            <Lottie animationData={loadingAnimation} loop />
+          </div>
+          <div className="text-white text-2xl">データ取得中...</div>
         </div>
-        <div className="text-white text-2xl">データ取得中...</div>
-      </div>
-
       )}
-      
     </>
   );
 }
