@@ -48,7 +48,7 @@ export default function ProductCardClient({ product }: ProductCardClientProps) {
         ) : product?.altImageUrl ? (
           <div className="relative w-full h-0 pb-[90%] overflow-hidden">
             <img
-              src={product.altImageUrl}
+            //   src={product.altImageUrl}
               alt={product.name}
               className="absolute top-0 left-0 w-full h-full object-cover object-top"
             />

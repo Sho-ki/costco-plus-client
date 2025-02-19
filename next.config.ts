@@ -24,10 +24,10 @@ const nextConfig: NextConfig = {
 				protocol: 'https',
 				hostname: 'ikkoss.com',
 			},
-			{
-				protocol: 'https',
-				hostname: 'cds2.costcojapan.jp',
-			},
+			// {
+			// 	protocol: 'https',
+			// 	hostname: 'cds2.costcojapan.jp',
+			// },
 		],
 	},
 };
