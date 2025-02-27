@@ -14,18 +14,6 @@ const nextConfig: NextConfig = {
 		remotePatterns: [
 			{
 				protocol: 'https',
-				hostname: 'wp.com',
-			},
-			{
-				protocol: 'https',
-				hostname: 'i0.wp.com',
-			},
-			{
-				protocol: 'https',
-				hostname: 'ikkoss.com',
-			},
-			{
-				protocol: 'https',
 				hostname: 'storage.googleapis.com',
 			},
 		],
