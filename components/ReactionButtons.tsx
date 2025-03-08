@@ -167,19 +167,19 @@ export function ReactionButtons({ post, onReaction }: ReactionButtonsProps) {
   const getIconForReaction = (name: string) => {
     switch (name) {
       case "LIKE":
-        return <ThumbsUp className="w-3 h-3" />;
+        return <ThumbsUp className="w-5 h-5" />;
       case "AGREE":
-        return <Laugh className="w-3 h-3" />;
+        return <Laugh className="w-5 h-5" />;
       case "UNDERSTAND":
-        return <GraduationCap className="w-3 h-3" />;
+        return <GraduationCap className="w-5 h-5" />;
       case "WANT":
-        return <HelpCircle className="w-3 h-3" />;
+        return <HelpCircle className="w-5 h-5" />;
       case "IN_STOCK":
-        return <Check className="w-3 h-3" />;
+        return <Check className="w-5 h-5" />;
       case "OUT_OF_STOCK":
-        return <X className="w-3 h-3" />;
+        return <X className="w-5 h-5" />;
       default:
-        return <HelpCircle className="w-3 h-3" />;
+        return <HelpCircle className="w-5 h-5" />;
     }
   };
 
@@ -214,7 +214,7 @@ export function ReactionButtons({ post, onReaction }: ReactionButtonsProps) {
               e.stopPropagation();
               handleReactionClick(reaction);
             }}
-            className={`flex items-center justify-center w-5 h-5 rounded-full transition ${
+            className={`flex items-center justify-center w-7 h-7 rounded-full transition ${
               selectedReactionId === reaction.id
                 ? `bg-${reaction.color}-300 text-${reaction.color}-700`
                 : `bg-gray-100 hover:bg-${reaction.color}-400 text-gray-400`

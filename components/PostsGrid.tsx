@@ -59,8 +59,8 @@ const PostsGrid: React.FC<PostsGridProps> = ({ posts, onClickPost }) => {
           </div>
 
           {/* Post content */}
-          <div className="p-4 flex-1 overflow-hidden">
-            <h3 className="text-md sm:text-md font-medium text-gray-900 leading-tight line-clamp-2 overflow-hidden break-words">
+          <div className="px-4 pt-4 flex-1 overflow-hidden">
+            <h3 className="text-sm font-medium text-gray-900 leading-tight line-clamp-3 overflow-hidden break-words">
               {post.content}
             </h3>
           </div>
