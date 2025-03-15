@@ -22,7 +22,7 @@ const geistMono = Radio_Canada({
 });
 
 export const metadata: Metadata = {
-  title: "コストコハッカープラス＋ | もっとコストコ！",
+  title: "毎週更新！最新コストコセール情報 | コストコプラス＋",
   description:
     "コストコの最新セール情報、リアルタイム混雑状況、ガソリン価格をチェック。コストコでのショッピングをより便利に、よりお得に。",
 };
