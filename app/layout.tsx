@@ -21,11 +21,23 @@ const geistMono = Radio_Canada({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "毎週更新！最新コストコセール情報 | コストコプラス＋",
-  description:
-    "コストコの最新セール情報、リアルタイム混雑状況、ガソリン価格をチェック。コストコでのショッピングをより便利に、よりお得に。",
-};
+
+export  function generateMetadata() {
+  const currentDate = new Date();
+  const options: Intl.DateTimeFormatOptions = { month: "numeric", day: "numeric" };
+  let formattedDate = currentDate.toLocaleDateString("ja-JP", options);
+  // 例："10/20" → "10月20日"
+  formattedDate = formattedDate.replace("/", "月") + "日";
+
+  return {
+    title: `毎週更新！${formattedDate}のコストコセール情報 | コストコプラス＋`,
+    description:
+      `${formattedDate}更新！コストコの最新セール情報、リアルタイム混雑状況、ガソリン価格をチェック。` +
+      `コストコでのショッピングをより便利に、よりお得に。最終更新日: ${formattedDate}`,
+  };
+}
+
+export const metadata: Metadata = generateMetadata();
 
 export default async function RootLayout({
   children,

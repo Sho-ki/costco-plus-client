@@ -17,12 +17,12 @@ export async function generateMetadata() {
   formattedDate = formattedDate.replace("/", "月") + "日";
 
   return {
-    title: "毎週更新！最新コストコセール情報 | コストコプラス＋",
+    title: `毎週更新！${formattedDate}のコストコセール情報 | コストコプラス＋`,
     description:
       `${formattedDate}更新！コストコの最新セール情報、リアルタイム混雑状況、ガソリン価格をチェック。` +
       `コストコでのショッピングをより便利に、よりお得に。最終更新日: ${formattedDate}`,
     openGraph: {
-      title: "毎週更新！最新コストコセール情報 | コストコプラス＋",
+      title: `毎週更新！${formattedDate}のコストコセール情報 | コストコプラス＋`,
       description: `コストコの最新セール情報、リアルタイム混雑状況、ガソリン価格をチェック。最新更新日: ${formattedDate}`,
       url: "https://costco-plus.com/",
       siteName: "コストコプラス＋",
