@@ -1,5 +1,5 @@
 // app/layout.tsx
-import type { Metadata } from "next";
+// import type { Metadata } from "next";
 import { Gabarito, Radio_Canada } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
